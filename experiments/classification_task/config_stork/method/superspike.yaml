@@ -1,6 +1,0 @@
-name: superspike
-other: stochasticsuperspike
-
-lr: 20
-
-target_sigma_u: 1

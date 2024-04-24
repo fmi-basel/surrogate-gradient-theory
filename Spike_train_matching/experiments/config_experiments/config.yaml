@@ -10,7 +10,7 @@ hydra:
 
 defaults:
   - dataset: oxford
-  - method: stochasticsuperspike
+  - method: superspike
   - dataset_method: ${dataset}_${method}
 
 seed: 17

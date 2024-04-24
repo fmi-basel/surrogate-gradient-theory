@@ -5,7 +5,7 @@ import logging
 import os
 
 import sys                                                          # noqa
-sys.path.append("../../")                                           # noqa
+sys.path.append("../")                                           # noqa
 from utils import snn, datasets, stochastic_network, utils          # noqa
 
 
