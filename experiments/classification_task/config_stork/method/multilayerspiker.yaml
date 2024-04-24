@@ -1,0 +1,6 @@
+name: multilayerspiker
+other: superspike
+
+lr: 20
+
+target_sigma_u: 1

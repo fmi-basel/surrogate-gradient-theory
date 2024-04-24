@@ -1,0 +1,9 @@
+point_alpha: 0.3
+nb_samples: 5
+
+nb_samples_trials: 201
+point_alpha_trials: 0.75
+idx_neuron: 1022
+idx_layer: 1
+
+sample_seed: 12

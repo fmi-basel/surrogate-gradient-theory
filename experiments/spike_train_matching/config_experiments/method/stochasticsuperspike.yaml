@@ -1,0 +1,6 @@
+name: stochasticsuperspike
+sg_mode: sigmoidspike
+
+stoch: True
+sigm: True
+nb_trials: 10

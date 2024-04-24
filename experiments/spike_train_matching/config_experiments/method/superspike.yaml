@@ -1,0 +1,6 @@
+name: superspike
+sg_mode: superspike
+
+stoch: False
+sigm: True
+nb_trials: 1

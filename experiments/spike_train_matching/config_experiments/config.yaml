@@ -1,0 +1,54 @@
+hydra:
+  job:
+    name: "${method.name}"
+    chdir: True
+  run:
+    dir: Runs/${hydra.job.name}/dataset=${dataset.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: Runs/${now:%Y-%m-%d}/${method.name}/dataset=${dataset.name}/nb_trials=${method.nb_trials}
+    subdir: seed=${seed}+lr_h=${dataset_method.lr_h}+lr_o=${dataset_method.lr_o}
+
+defaults:
+  - dataset: oxford
+  - method: stochasticsuperspike
+  - dataset_method: ${dataset}_${method}
+
+seed: 17
+reset_mode: False
+
+validate_with_other_method: True
+
+save_mem: False
+save_spk: True
+save_dw: False
+save_w: False
+
+mV: 1e-3
+ms: 1e-3
+
+dt: 1e-3
+nb_epochs: 1500
+logging_freq: 500
+
+tau_mem: 10e-3
+tau_syn: 5e-3
+eps0:  200e-3
+
+theta: 1
+k0: -1
+
+p0: 0.6666666666666666666667
+delta_uh: 133e-3
+delta_uo: 13e-3
+beta_h: 10
+beta_o: 100
+
+fi: 50 
+out_prob: 0.85
+target_sigma_u: 1
+
+batch_id: 0
+o_neuron_id: 2
+h_neuron_id: 10
+i_neuron_id: 0
+

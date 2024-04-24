@@ -1,0 +1,6 @@
+name: multilayerspiker
+sg_mode: multilayerspiker
+
+stoch: True
+sigm: True
+nb_trials: 10
