@@ -1,0 +1,9 @@
+upperBoundL2Strength: 0.1
+upperBoundL2Threshold: 7
+dims: [-2, -1]
+
+lowerBoundL1Strength: 0.0
+lowerBoundL1Threshold: 0
+
+lowerBoundL2Strength: 0
+lowerBoundL2Threshold: 0

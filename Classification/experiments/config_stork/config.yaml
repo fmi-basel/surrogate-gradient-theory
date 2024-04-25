@@ -1,0 +1,59 @@
+hydra:
+  job:
+    name: "stork_${method.name}"
+    chdir: True
+  run:
+    dir: Runs/${hydra.job.name}/dataset=${dataset.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: Runs/${hydra.job.name}/dataset=${dataset.name}/${now:%Y-%m-%d}
+    subdir: seed=${seed}+lr=${method.lr}
+
+defaults:
+  - dataset: SHD
+  - method: stochasticsuperspike
+  - regularizer: default
+  - wandb: default
+  - plotting: default
+
+using_wandb: True
+loss_type: mot_ce
+plot: plot
+sigm: False
+optimizer: smorms3
+device: cuda:1
+diff_reset: False
+monitor_spikes: True
+monitor_fano: 10
+binned: False
+monitor_chunks: True
+epoch_chunk: 5
+
+seed: 1
+
+nb_epochs: 200
+logging_freq: 10
+
+tau_mem: 20e-3
+tau_syn: 10e-3
+
+tau_readout: ${dataset.duration}
+
+eps_0:  267e-3
+p0: 0.6666666666666667
+theta: 1
+k0: -1
+delta_uo: 13e-3
+delta_uh: 133e-3
+beta: 10
+
+batch_size: 400
+
+batch_id: 0
+o_neuron_id: 2
+h_neuron_id: 10
+i_neuron_id: 0
+
+anneal: False
+anneal_start: 0
+anneal_step: 1
+anneal_interval: 5

@@ -1,0 +1,6 @@
+name: superspike
+other: stochasticsuperspike
+
+lr: 0.01
+
+target_sigma_u: 1
