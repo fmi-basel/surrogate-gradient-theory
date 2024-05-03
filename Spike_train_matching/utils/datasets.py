@@ -1,18 +1,13 @@
 
-import randman
-import numpy as np
-
 import jax.numpy as jnp
 
 import jax
 import jax.numpy as jnp
 
 import matplotlib.image as mpimg
-import torch
 
 from . import utils
 
-from omegaconf import DictConfig
 
 ###########################################################################################################
 # For Image Spike-Train matching task
