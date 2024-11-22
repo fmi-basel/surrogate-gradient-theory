@@ -288,6 +288,9 @@ def set_up_model(cfg: DictConfig, device, dtype, wandb_handle=None):
     if cfg.loss_type == "mot_ce":
         loss_stack = stork.loss_stacks.MaxOverTimeCrossEntropy()
         log.info("using max over time cross entropy loss")
+    elif cfg.loss_type == "sum_of_softmax":
+        loss_stack = stork.loss_stacks.SumOfSoftmaxCrossEntropy()
+        log.info("using sum of softmax loss")
     else:
         raise ValueError("chosen loss function is not supported: " + str(cfg.loss_type))
 
@@ -575,10 +578,10 @@ def monitor_model(cfg: DictConfig, model, data, path, same=True, wandb=None, ep=
             stork.plotting.plot_activity(
                 model,
                 data=data,
-                figsize=(5, 5),
-                dpi=150,
+                figsize=(4.5, 5),
+                dpi=300,
                 point_alpha=0.3,
-                pal=["#008CA5", "#EBB400"],
+                pal= ["#c24705ff", "gray"], #["#008CA5", "#EBB400"],
                 pos=(0, 0),
                 off=(0.0, -0.05),
             )
@@ -591,13 +594,13 @@ def monitor_model(cfg: DictConfig, model, data, path, same=True, wandb=None, ep=
 
             log.info("plotting snapshot")
 
-        plt.figure(dpi=150)
+        plt.figure(dpi=300)
         stork.plotting.plot_activity_snapshot(
             model,
             data=data,
             nb_samples=cfg.plotting.nb_samples,
-            figsize=(10, 5),
-            dpi=250,
+            figsize=(8, 5),
+            dpi=300,
             point_alpha=cfg.plotting.point_alpha,
             pal=sns.color_palette(cc.glasbey, n_colors=cfg.dataset.nb_classes),
         )
@@ -622,6 +625,9 @@ def monitor_model(cfg: DictConfig, model, data, path, same=True, wandb=None, ep=
                 sharey=True,
             )
             for ax in axs:
+                n_idx = np.random.randint(
+                        0, model.groups[cfg.plotting.idx_layer + 1].nb_units
+                    )
                 stork.plotting.plot_activity_over_trials(
                     model,
                     data=data,
@@ -629,11 +635,10 @@ def monitor_model(cfg: DictConfig, model, data, path, same=True, wandb=None, ep=
                     point_alpha=cfg.plotting.point_alpha_trials,
                     point_size=2,
                     layer_idx=cfg.plotting.idx_layer,
-                    neuron_idx=np.random.randint(
-                        0, model.groups[cfg.plotting.idx_layer + 1].nb_units
-                    ),
+                    neuron_idx=n_idx,
                     nolabel=True,
                 ),
+                ax.set_title("Neuron " + str(n_idx))
                 ax.set_xlabel("time step")
 
             axs[0].set_ylabel("trial")
@@ -713,8 +718,8 @@ def evaluate_training(
         plt.savefig(os.path.join(os.getcwd(), "training.png"))
         plt.close()
 
-        print("Test loss: ", results["test_loss"])
-        print("Test acc.: ", results["test_acc"])
+        log.info("Test loss: ", results["test_loss"])
+        log.info("Test acc.: ", results["test_acc"])
     return results
 
 
@@ -723,7 +728,7 @@ def evaluate_training(
 ##############################################################################################
 
 
-@hydra.main(version_base=None, config_path="config_stork")
+@hydra.main(version_base=None, config_path="config_stork", config_name="config")
 def main(cfg: DictConfig):
     """Main function to train an SNN according to the given config
 
@@ -733,6 +738,7 @@ def main(cfg: DictConfig):
     Raises:
         ValueError: For invalid configs
     """
+    print("#" * 30 + "\n# CONFIG\n" + "#" * 30)
     # Update config nb_steps
     nb_steps = int(int(cfg.dataset.duration / cfg.dataset.time_step))
     with open_dict(cfg):

@@ -26,7 +26,7 @@ monitor_spikes: True
 monitor_fano: 10
 binned: False
 monitor_chunks: True
-epoch_chunk: 5
+epoch_chunk: 200
 
 seed: 1
 
