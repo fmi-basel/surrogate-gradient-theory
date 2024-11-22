@@ -3,14 +3,14 @@ hydra:
     name: "${method.name}"
     chdir: True
   run:
-    dir: Runs/${hydra.job.name}/dataset=${dataset.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    dir: Runs/${hydra.job.name}/dataset=${dataset.name}/Example
   sweep:
     dir: Runs/${now:%Y-%m-%d}/${method.name}/dataset=${dataset.name}/nb_trials=${method.nb_trials}
     subdir: seed=${seed}+lr_h=${dataset_method.lr_h}+lr_o=${dataset_method.lr_o}
 
 defaults:
   - dataset: oxford
-  - method: superspike
+  - method: stochasticsuperspike
   - dataset_method: ${dataset}_${method}
 
 seed: 17

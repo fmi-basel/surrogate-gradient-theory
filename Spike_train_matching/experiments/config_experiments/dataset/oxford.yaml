@@ -1,6 +1,6 @@
 name: oxford
 
-data_path: '../../../../../dataset/oxford.png'
+data_path: '../../../../dataset/oxford.png'
 
 nb_inputs: 200
 nb_hidden: 200

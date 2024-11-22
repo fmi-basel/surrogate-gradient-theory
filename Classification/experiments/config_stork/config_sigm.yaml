@@ -3,7 +3,7 @@ hydra:
     name: "stork_${method.name}"
     chdir: True
   run:
-    dir: Runs/${hydra.job.name}/sigmoidal/dataset=${dataset.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    dir: Runs/${hydra.job.name}/sigmoidal/dataset=${dataset.name}/Example
   sweep:
     dir: Runs/${hydra.job.name}/sigmoidal/dataset=${dataset.name}/${now:%Y-%m-%d}
     subdir: seed=${seed}+lr=${method.lr}
@@ -20,7 +20,7 @@ loss_type: mot_ce
 plot: plot
 sigm: True
 optimizer: smorms3
-device: cuda:1
+device: cpu
 diff_reset: False
 monitor_spikes: True
 monitor_fano: 10

@@ -1,5 +1,4 @@
 import os
-import sys
 
 from datetime import datetime
 import logging
@@ -15,11 +14,7 @@ import colorcet as cc
 import hydra
 from omegaconf import DictConfig, OmegaConf, open_dict
 
-
-sys.path.append("/tungstenfs/scratch/gzenke/gygajuli/stork-1/")
-
-import stork.datasets
-from stork.datasets import HDF5Dataset, DatasetView
+import stork
 
 from stork.models import RecurrentSpikingModel
 from stork.nodes import InputGroup, ReadoutGroup, LIFGroup
@@ -29,6 +24,7 @@ from stork.initializers import (
     FluctuationDrivenCenteredNormalInitializer,
     DistInitializer,
 )
+from stork.datasets import HDF5Dataset, DatasetView
 from stork.layers import ConvLayer
 
 
@@ -753,7 +749,7 @@ def main(cfg: DictConfig):
             settings=wandb.Settings(start_method="thread"),
             config=OmegaConf.to_container(cfg, resolve=True, throw_on_missing=True),
             name=cfg.method.name + "-s=" + str(cfg.seed) + "-dr=" + str(cfg.diff_reset)  + "-lr=" + str(cfg.method.lr) ,
-            mode="disabled"
+            # mode="disabled"
         )
         print(wandb.config)
 

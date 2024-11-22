@@ -4,12 +4,13 @@ from omegaconf import OmegaConf
 import logging
 import os
 
-import sys                                                          # noqa
-sys.path.append("../")                                           # noqa
-from utils import snn, datasets, stochastic_network, utils          # noqa
+import sys  # noqa
+
+sys.path.append("../")  # noqa
+from utils import snn, datasets, stochastic_network, utils  # noqa
 
 
-os.environ['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.5'
+os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "0.5"
 os.environ["HYDRA_FULL_ERROR"] = "1"
 # os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "False"
 
@@ -21,18 +22,18 @@ log = logging.getLogger(__name__)
 def main(cfg):
 
     # device_idx = 0
-    # jax.config.update("jax_default_device", jax.devices()[device_idx]) 
+    # jax.config.update("jax_default_device", jax.devices()[device_idx])
 
     log.info("====================================================")
     # device_idx = 0
-    # jax.config.update("jax_default_device", jax.devices()[device_idx]) 
+    # jax.config.update("jax_default_device", jax.devices()[device_idx])
     # log.info("Using device: %s", jax.devices()[device_idx])
 
     print(OmegaConf.to_yaml(cfg))
 
     # print current working directory
     print(os.getcwd())
-    
+
     key = jax.random.PRNGKey(cfg.seed)
 
     log.info("prepare data")
@@ -46,7 +47,8 @@ def main(cfg):
         fi=cfg.fi,
         batch_size=cfg.dataset.batch_size,
         dt=cfg.dt,
-        reset_mode=cfg.reset_mode)
+        reset_mode=cfg.reset_mode,
+    )
 
     w_dir = os.getcwd()
 
@@ -54,8 +56,16 @@ def main(cfg):
     utils.create_and_jnpsave(w_dir, "data/z_data.npy", z_data)
 
     log.info("generate initial weights")
-    w, key = snn.get_initial_weights(key, cfg.dataset.nb_inputs, cfg.dataset.nb_hidden,
-                                     cfg.dataset.nb_outputs, cfg.tau_syn, cfg.tau_mem, cfg.fi, cfg.target_sigma_u)
+    w, key = snn.get_initial_weights(
+        key,
+        cfg.dataset.nb_inputs,
+        cfg.dataset.nb_hidden,
+        cfg.dataset.nb_outputs,
+        cfg.tau_syn,
+        cfg.tau_mem,
+        cfg.fi,
+        cfg.target_sigma_u,
+    )
 
     log.info("create network")
     sto_net = stochastic_network.StochasticNetwork(
@@ -87,7 +97,7 @@ def main(cfg):
         sigm=cfg.method.sigm,
         dt=cfg.dt,
         logging_freq=cfg.logging_freq,
-        validate_with_other_method=cfg.validate_with_other_method
+        validate_with_other_method=cfg.validate_with_other_method,
     )
     log.info("start training")
     sto_net.train(w, x_data, z_data, key, log)

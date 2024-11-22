@@ -28,6 +28,7 @@ kernel_size: [11, 5, 5]        # Convolutional operation parameters
 stride: [1,1,1]
 padding: [0, 0, 0]
 
+rec: False
 rec_kernel_size: 5
 rec_stride: 1
 rec_padding: 2
